@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dactilar Arquitectura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF;
+    --cream:#F8F3EC;
+    --cream-deep:#EFE6D6;
+    --forest:#053B2D;
+    --forest-2:#0F5A41;
+    --teal:#203F3F;
+    --teal-soft:#2B4E4E;
+    --ink:#16211D;
+    --red:#941704;
+    --red-soft:#B33A22;
+    --blue:#ADC6E4;
+    --line: color-mix(in oklch, var(--ink) 14%, transparent);
+    --line-soft: color-mix(in oklch, var(--ink) 8%, transparent);
+    --max: 1220px;
+    --pad: clamp(1.25rem, 4vw, 4rem);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    color-scheme: light;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  @media (prefers-reduced-motion: no-preference){
+    html{scroll-behavior:smooth;}
+  }
+
+  body{
+    margin:0;
+    background:var(--white);
+    color:var(--ink);
+    font-family:"Archivo", ui-sans-serif, system-ui, sans-serif;
+    font-size:1.0625rem;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:"Helvetica Neue", Helvetica, Arial, ui-sans-serif, sans-serif;
+    font-weight:700;
+    color:var(--forest);
+    margin:0;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+
+  p{margin:0;}
+  a{color:inherit;}
+  img{display:block;max-width:100%;}
+  button{font-family:inherit;}
+
+  .wrap{
+    padding-left:var(--pad);
+    padding-right:var(--pad);
+  }
+
+  ::selection{background:var(--blue);color:var(--forest);}
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--red);
+    outline-offset:3px;
+  }
+
+  /* ---------- REVEAL ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .reveal.is-visible{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+  }
+
+  /* ---------- NAV ---------- */
+  header.site-nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:transparent;
+    box-shadow:0 0 0 0 transparent;
+    transition:background .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  header.site-nav.is-scrolled{
+    background:var(--teal);
+    box-shadow:0 12px 30px -18px rgba(0,0,0,.45);
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:.95rem;
+    padding-bottom:.95rem;
+    max-width:none;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:.65rem;
+    font-family:"Helvetica Neue", Helvetica, Arial, ui-sans-serif, sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    letter-spacing:-.01em;
+    color:var(--cream);
+    text-decoration:none;
+  }
+  .brand img{width:30px;height:auto;flex:none;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.2;}
+  .brand-name{margin-top:.45rem;}
+  .brand-tagline{
+    font-family:"Helvetica Neue", Helvetica, Arial, ui-sans-serif, sans-serif;
+    font-weight:400;
+    font-size:.66rem;
+    letter-spacing:.02em;
+    color:color-mix(in oklch, var(--cream) 75%, transparent);
+    margin-top:-.05rem;
+  }
+
+  .nav-right{
+    display:flex;
+    align-items:center;
+    gap:clamp(1.1rem, 2vw, 2.1rem);
+  }
+  nav.links{
+    display:flex;
+    align-items:center;
+    gap:clamp(1.1rem, 2vw, 2.1rem);
+  }
+  nav.links a{
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.8rem;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    text-decoration:none;
+    color:color-mix(in oklch, var(--cream) 72%, transparent);
+    transition:color .3s var(--ease);
+  }
+  nav.links a:hover{color:var(--white);}
+  nav.links a.is-active{color:var(--white);}
+
+  .nav-toggle{
+    display:none;
+    background:none;
+    border:1px solid color-mix(in oklch, var(--cream) 40%, transparent);
+    border-radius:3px;
+    width:2.3rem;
+    height:2.3rem;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+  }
+  .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after{
+    content:"";
+    display:block;
+    width:16px;
+    height:1.5px;
+    background:var(--cream);
+    position:relative;
+    transition:transform .3s var(--ease), opacity .3s var(--ease);
+  }
+  .nav-toggle span::before{position:absolute; top:-5px;}
+  .nav-toggle span::after{position:absolute; top:5px;}
+
+  @media (max-width: 860px){
+    nav.links{
+      position:fixed;
+      inset:60px 0 auto 0;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:0;
+      background:var(--teal);
+      padding:.5rem var(--pad) 1.4rem;
+      transform:translateY(-8px);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s var(--ease), transform .25s var(--ease);
+    }
+    nav.links.is-open{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
+    nav.links a{
+      width:100%;
+      padding:.9rem 0;
+      border-bottom:1px solid color-mix(in oklch, var(--cream) 16%, transparent);
+    }
+    .nav-toggle{display:flex;}
+  }
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{
+    position:relative;
+    z-index:1;
+    background:var(--white);
+    padding-top:clamp(4.5rem, 9vw, 8rem);
+    padding-bottom:clamp(4.5rem, 9vw, 8rem);
+  }
+  section.tone-cream{background:var(--cream);}
+  section.tone-teal{background:var(--teal); color:var(--cream);}
+  section.tone-teal h2, section.tone-teal h3{color:var(--white);}
+
+  .eyebrow{
+    display:block;
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:1rem;
+    font-weight:600;
+    letter-spacing:.01em;
+    color:var(--forest);
+    opacity:1;
+    margin-bottom:1rem;
+  }
+  .tone-teal .eyebrow{color:var(--white); opacity:.9;}
+
+  .lede{
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:clamp(1.1rem, 1.1vw + .9rem, 1.35rem);
+    font-weight:400;
+    max-width:38rem;
+    color:var(--forest-2);
+  }
+  .tone-teal .lede{color:color-mix(in oklch, var(--cream) 88%, transparent);}
+
+  .grid-2{
+    display:grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap:clamp(2rem, 5vw, 5rem);
+    align-items:start;
+  }
+  .grid-2.reverse{grid-template-columns:1.15fr .85fr;}
+  .grid-2.reverse .plate{order:-1;}
+  @media (max-width: 860px){
+    .grid-2, .grid-2.reverse{grid-template-columns:1fr;}
+    .grid-2.reverse .plate{order:0;}
+  }
+
+  /* ---------- ENFOQUE ---------- */
+  #enfoque{min-height:100svh; display:grid; align-items:center;}
+  .enfoque-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(2rem, 8vw, 6rem);
+  }
+  .enfoque-grid h2{
+    font-size:clamp(1.5rem, 1.6vw + 1rem, 2.15rem);
+    line-height:1.22;
+  }
+  .enfoque-text{
+    margin-top:clamp(4rem, 11vw, 10rem);
+    color:var(--ink);
+  }
+  @media (max-width:860px){
+    #enfoque{min-height:0;}
+    .enfoque-grid{grid-template-columns:1fr; gap:1.5rem;}
+    .enfoque-text{margin-top:0;}
+  }
+
+  .enfoque-quehacemos .grid-2{margin-top:2.6rem; align-items:center;}
+  .enfoque-quehacemos .plate{width:100%; max-width:36rem; margin-left:auto; margin-right:auto; transition:opacity .3s var(--ease);}
+  .enfoque-quehacemos .plate.is-swapping{opacity:0;}
+  .enfoque-list{
+    margin-top:1.8rem;
+    display:flex;
+    flex-direction:column;
+  }
+  .enfoque-item{
+    display:block;
+    width:100%;
+    border:none;
+    background:none;
+    padding:1.5rem 0;
+    margin:0;
+    text-align:left;
+    font:inherit;
+    color:inherit;
+    cursor:pointer;
+    border-top:1px solid color-mix(in oklch, var(--cream) 30%, transparent);
+  }
+  .enfoque-item:first-child{padding-top:0; border-top:none;}
+  .enfoque-item h3{
+    font-size:1.15rem;
+    font-weight:700;
+    margin-bottom:.4rem;
+    opacity:.6;
+    transition:opacity .3s var(--ease);
+  }
+  .enfoque-item p{
+    max-width:32rem;
+    color:var(--ink);
+  }
+  .enfoque-item.is-active h3{opacity:1;}
+  .tone-teal .enfoque-item p{color:color-mix(in oklch, var(--cream) 88%, transparent);}
+
+  .body-copy{max-width:40rem;}
+  .body-copy p + p{margin-top:1.1rem;}
+  .body-copy p{color:var(--ink);}
+  .tone-teal .body-copy p{color:color-mix(in oklch, var(--cream) 90%, transparent);}
+
+  /* ---------- PLATE (photo frame) ---------- */
+  .plate{position:relative;}
+  .plate .frame{
+    position:relative;
+    aspect-ratio: var(--ar, 4 / 5);
+    overflow:hidden;
+    background:var(--cream);
+  }
+  .plate .frame img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  /* ---------- HERO (fondo fijo, un proyecto por foto) ---------- */
+  .hero{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:0;
+    height:100svh;
+    min-height:34rem;
+    max-height:56rem;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    padding:0;
+  }
+  .hero-spacer{
+    height:100svh;
+    min-height:34rem;
+    max-height:56rem;
+  }
+  .hero-slide{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0;
+    transition:opacity 1.6s var(--ease);
+  }
+  .hero-slide.is-active{opacity:1;}
+  .hero-scrim{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(0deg, rgba(6,14,12,.72) 0%, rgba(6,14,12,.28) 45%, rgba(6,14,12,.32) 100%);
+  }
+  .hero .wrap{position:relative; z-index:2; width:100%; max-width:none;}
+  h1.headline{
+    font-weight:300;
+    font-size:clamp(2.4rem, 3.4vw + 1.2rem, 4.4rem);
+    line-height:1.04;
+    letter-spacing:-.02em;
+    color:var(--white);
+    max-width:34rem;
+  }
+  h1.headline em{
+    font-style:italic;
+    color:var(--white);
+  }
+  .hero .hero-info{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    max-width:none;
+    margin-left:0;
+    margin-right:0;
+    z-index:2;
+    padding-bottom:clamp(1rem, 2.8vh, 1.8rem);
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.8rem;
+    transition:opacity .5s var(--ease);
+  }
+  .hero-info .caption{font-weight:500; font-size:1rem; color:var(--white);}
+
+  /* ---------- QUIÉNES SOMOS ---------- */
+  #quienes-somos{min-height:100svh; display:grid;}
+  #quienes-somos .wrap{height:100%;}
+  .quienes-grid{
+    display:grid;
+    grid-template-columns:minmax(0, 42%) 1fr;
+    align-items:stretch;
+    gap:clamp(2rem, 6vw, 5rem);
+    height:100%;
+  }
+  .quienes-photo{
+    position:relative;
+    margin-left:calc(var(--pad) * -1);
+  }
+  .quienes-photo .frame{
+    position:relative;
+    height:100%;
+    min-height:38rem;
+    aspect-ratio:auto;
+  }
+  .quienes-photo .eyebrow{
+    position:absolute;
+    top:clamp(1.4rem, 3vw, 2.2rem);
+    left:clamp(1.4rem, 3vw, 2.2rem);
+    color:var(--white);
+    opacity:1;
+    margin:0;
+    z-index:2;
+  }
+  .quienes-caption{
+    position:absolute;
+    bottom:clamp(1.2rem, 2.6vw, 2rem);
+    left:clamp(1.4rem, 3vw, 2.2rem);
+    z-index:2;
+    margin:0;
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.85rem;
+    color:var(--white);
+  }
+  .quienes-text{align-self:center;}
+  .quienes-text .body-copy p{text-wrap:pretty;}
+  @media (max-width:860px){
+    #quienes-somos{min-height:0;}
+    #quienes-somos .wrap{height:auto;}
+    .quienes-grid{grid-template-columns:1fr; height:auto;}
+    .quienes-photo{margin-left:calc(var(--pad) * -1); margin-right:calc(var(--pad) * -1);}
+    .quienes-photo .frame{min-height:22rem;}
+  }
+
+
+  /* ---------- PROYECTOS (carrusel) ---------- */
+  .projects-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:2rem;
+    flex-wrap:wrap;
+  }
+  .carousel-controls{
+    display:flex;
+    align-items:center;
+    gap:.9rem;
+  }
+  .carousel-btn{
+    width:2.7rem;
+    height:2.7rem;
+    border:1px solid color-mix(in oklch, var(--forest) 28%, transparent);
+    border-radius:50%;
+    background:none;
+    color:var(--forest);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    opacity:.7;
+    transition:opacity .3s var(--ease), background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .carousel-btn svg{width:20px;height:20px;}
+  .carousel-btn:hover{opacity:1; background:var(--forest); border-color:var(--forest); color:var(--white);}
+  .carousel-btn:disabled{opacity:.15; cursor:default; pointer-events:none;}
+
+  .carousel-viewport{
+    margin-top:3rem;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    cursor:grab;
+    margin-left:calc(var(--pad) * -1);
+    margin-right:calc(var(--pad) * -1);
+  }
+  .carousel-viewport.is-dragging{cursor:grabbing; scroll-snap-type:none;}
+  .carousel-viewport::-webkit-scrollbar{display:none;}
+  .carousel-track{
+    display:flex;
+    align-items:center;
+    gap:clamp(1rem, 2.4vw, 2rem);
+    width:max-content;
+    /* el padding izq/der (para que la primera y última tarjeta también puedan centrarse) lo calcula JS en sizeCards() */
+  }
+  .project-card{
+    flex:none;
+    width:clamp(240px, 21vw, 320px);
+    scroll-snap-align:center;
+    text-decoration:none;
+    color:inherit;
+    display:block;
+    transition:opacity .35s var(--ease), width .4s var(--ease), transform .35s var(--ease);
+  }
+  .project-card.is-adjacent{
+    width:clamp(295px, 28vw, 390px);
+  }
+  .project-card.is-center{
+    width:clamp(365px, 35vw, 500px);
+  }
+  .project-card .plate{--ar:4/3;}
+  .project-card .plate .frame{background:var(--cream);}
+  .project-card .plate .frame img{transition:opacity .5s var(--ease);}
+  .project-card .plate .frame img + img{opacity:0;}
+  .project-card:hover .plate .frame img + img{opacity:1;}
+  .project-card .meta{
+    margin-top:1.1rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:1rem;
+  }
+  .project-card h3{
+    font-size:1.05rem;
+    font-weight:700;
+  }
+  .project-card .tag{
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.78rem;
+    color:var(--forest-2);
+    opacity:.7;
+    white-space:nowrap;
+  }
+
+  .carousel-dots{
+    margin-top:2.4rem;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:.6rem;
+  }
+  .carousel-dots button{
+    width:.5rem;
+    height:.5rem;
+    padding:0;
+    border:none;
+    border-radius:50%;
+    background:color-mix(in oklch, var(--forest) 25%, transparent);
+    cursor:pointer;
+    transition:background .3s var(--ease), transform .3s var(--ease);
+  }
+  .carousel-dots button.is-active{background:var(--forest); transform:scale(1.4);}
+
+  /* ---------- CONTACTO ---------- */
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:clamp(2rem, 5vw, 4.5rem);
+    align-items:start;
+  }
+  @media (max-width:860px){ .contact-grid{grid-template-columns:1fr;} }
+  .contact-info{
+    margin-top:1.8rem;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.92rem;
+    color:var(--forest-2);
+  }
+  .contact-info a{color:var(--forest); font-weight:600; text-decoration:none;}
+  .contact-info a:hover{color:var(--red);}
+  .contact-form{display:flex; flex-direction:column; gap:1rem;}
+  .contact-form input, .contact-form select, .contact-form textarea{
+    width:100%;
+    border:1px solid color-mix(in oklch, var(--forest) 25%, transparent);
+    background:var(--white);
+    padding:.9rem 1.1rem;
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.92rem;
+    color:var(--ink);
+  }
+  .contact-form input::placeholder, .contact-form textarea::placeholder{color:color-mix(in oklch, var(--forest-2) 65%, transparent);}
+  .contact-form textarea{resize:vertical; min-height:8rem;}
+  .contact-form-row{display:flex; gap:.8rem;}
+  .contact-form-row select{flex:0 0 7rem;}
+  .contact-form-row input{flex:1; min-width:0;}
+  .contact-submit{
+    align-self:flex-start;
+    margin-top:.4rem;
+    padding:.9rem 2.2rem;
+    border:none;
+    background:var(--forest);
+    color:var(--white);
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.85rem;
+    font-weight:600;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:background .3s var(--ease);
+  }
+  .contact-submit:hover{background:var(--teal);}
+  .contact-icons{margin-top:1.8rem; display:flex; gap:1rem;}
+  .contact-icons a{
+    width:2.6rem;
+    height:2.6rem;
+    border:1px solid color-mix(in oklch, var(--forest) 25%, transparent);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--forest);
+    transition:background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .contact-icons a svg{width:18px;height:18px;}
+  .contact-icons a:hover{background:var(--forest); border-color:var(--forest); color:var(--white);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    position:relative;
+    z-index:1;
+    background:var(--teal);
+    color:var(--cream);
+  }
+  footer .foot-row{
+    padding-top:1.8rem;
+    padding-bottom:1.8rem;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:.8rem 2rem;
+  }
+  footer .foot-copy{
+    font-size:.85rem;
+    color:var(--cream);
+  }
+  footer .foot-tagline{
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.85rem;
+    color:color-mix(in oklch, var(--cream) 82%, transparent);
+  }
+  .to-top{
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.74rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--cream);
+    opacity:.8;
+    transition:opacity .3s var(--ease), transform .3s var(--ease);
+  }
+  .to-top:hover{opacity:1; transform:translateY(-3px);}
+</style>
+<noscript><style>.reveal{opacity:1 !important; transform:none !important;} .hero-slide{opacity:1 !important;}</style></noscript>
+
+<header class="site-nav" id="siteNav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <img src="img/logo-icon.png" alt="Dactilar">
+      <span class="brand-text">
+        <span class="brand-name">Dactilar</span>
+        <span class="brand-tagline">Arquitectura y Construcción</span>
+      </span>
+    </a>
+    <div class="nav-right">
+      <nav class="links" id="navLinks">
+        <a href="#quienes-somos" data-section="quienes-somos">Quién somos</a>
+        <a href="#proyectos" data-section="proyectos">Proyectos</a>
+        <a href="#enfoque" data-section="enfoque">Enfoque</a>
+        <a href="#contacto" data-section="contacto">Contacto</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO (fondo fijo, un proyecto por foto) ================= -->
+  <section class="hero" id="heroSlider">
+    <div class="hero-slide is-active" style="background-image:url('img/cp-fachada.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('img/molino-fachada.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('img/loft-espacio.jpg')"></div>
+    <div class="hero-scrim"></div>
+    <div class="wrap">
+      <h1 class="headline">Diseñamos, construimos y dejamos <em>huella</em> en cada proyecto</h1>
+    </div>
+    <div class="wrap hero-info">
+      <span class="caption" id="heroCaption">Las Bahías</span>
+    </div>
+  </section>
+  <div class="hero-spacer" aria-hidden="true"></div>
+
+  <!-- ================= ENFOQUE ================= -->
+  <section id="enfoque">
+    <div class="wrap">
+      <div class="enfoque-grid">
+        <div class="reveal">
+          <p class="eyebrow">Enfoque</p>
+          <h2>Diseñamos y construimos de manera integral, poniendo en valor cada espacio y su contexto.</h2>
+        </div>
+        <div class="enfoque-text reveal">
+          <p>Ponemos en valor lo existente para crear espacios que se adapten a quienes los habitan. Nuestro enfoque combina funcionalidad, estética y respeto por el contexto, buscando que cada proyecto tenga identidad propia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUÉ HACEMOS ================= -->
+  <section id="que-hacemos" class="tone-teal">
+    <div class="wrap">
+      <div class="enfoque-quehacemos">
+        <p class="eyebrow reveal">Qué hacemos</p>
+        <div class="grid-2 reverse">
+          <div class="reveal">
+            <div class="enfoque-list" id="quehacemosList">
+              <button type="button" class="enfoque-item is-active" data-img="img/molino-quincho.jpg" data-alt="Quincho y mobiliario a medida del proyecto Molino Viejo">
+                <h3>Arquitectura y Diseño</h3>
+                <p>Creamos proyectos que integran arquitectura, interiorismo y diseño, cuidando cada detalle.</p>
+              </button>
+              <button type="button" class="enfoque-item" data-img="img/molino-espacios.jpg" data-alt="Living del proyecto Molino Viejo luego de su remodelación">
+                <h3>Remodelación</h3>
+                <p>Transformamos espacios existentes, descubriendo y potenciando su potencial.</p>
+              </button>
+              <button type="button" class="enfoque-item" data-img="img/molino-proceso.jpg" data-alt="Obra en construcción, estructura de madera antes del cierre">
+                <h3>Construcción</h3>
+                <p>Llevamos cada proyecto desde el diseño hasta su ejecución, entregando soluciones integrales y listas para habitar.</p>
+              </button>
+            </div>
+          </div>
+          <div class="plate reveal" id="quehacemosPlate" style="--ar:4/3;">
+            <div class="frame">
+              <img src="img/molino-quincho.jpg" alt="Quincho y mobiliario a medida del proyecto Molino Viejo" id="quehacemosImg">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ================= PROYECTOS (carrusel) ================= -->
+  <!-- Para sumar un proyecto nuevo: duplica un bloque <a class="project-card">...</a> dentro de #carouselTrack, con su foto de portada, nombre y categoría. -->
+  <section id="proyectos">
+    <div class="wrap">
+      <div class="projects-head reveal">
+        <p class="eyebrow">Proyectos Destacados</p>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="carouselPrev" aria-label="Proyecto anterior" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="carousel-btn" id="carouselNext" aria-label="Proyecto siguiente">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="carousel-viewport" id="carouselViewport">
+        <div class="carousel-track" id="carouselTrack">
+          <a class="project-card" href="#contacto">
+            <div class="plate">
+              <div class="frame">
+                <img src="img/molino-fachada.jpg" alt="Fachada del proyecto Molino Viejo, tejuela de alerce y grandes ventanales">
+                <img src="img/molino-cocina.jpg" alt="Cocina del proyecto Molino Viejo, con vista al jardín">
+              </div>
+            </div>
+            <div class="meta"><h3>Molino Viejo</h3><span class="tag">Remodelación</span></div>
+          </a>
+          <a class="project-card" href="#contacto">
+            <div class="plate">
+              <div class="frame">
+                <img src="img/loft-espacio.jpg" alt="Espacio principal del proyecto Loft, con lata microacanalada y doble altura">
+                <img src="img/loft-terraza.jpg" alt="Terraza del proyecto Loft, con living exterior al atardecer">
+              </div>
+            </div>
+            <div class="meta"><h3>Loft</h3><span class="tag">Remodelación</span></div>
+          </a>
+          <a class="project-card" href="#contacto">
+            <div class="plate">
+              <div class="frame">
+                <img src="img/cp-fachada.jpg" alt="Fachada de Las Bahías, dos volúmenes en tejuela de alerce y revestimiento metálico">
+                <img src="img/cp-cocina.jpg" alt="Cocina y comedor integrado de Las Bahías, con vista al lago">
+              </div>
+            </div>
+            <div class="meta"><h3>Las Bahías</h3><span class="tag">Construcción</span></div>
+          </a>
+        </div>
+      </div>
+      <div class="carousel-dots" id="carouselDots" role="tablist" aria-label="Seleccionar proyecto"></div>
+    </div>
+  </section>
+
+
+  <!-- ================= QUIÉNES SOMOS ================= -->
+  <section id="quienes-somos">
+    <div class="wrap">
+      <div class="quienes-grid">
+        <div class="plate quienes-photo reveal">
+          <div class="frame">
+            <img src="img/alejandra-cocina.jpg" alt="Alejandra, arquitecta y fundadora de Dactilar, en la cocina de uno de sus proyectos">
+          </div>
+          <p class="eyebrow">Quién somos</p>
+          <p class="quienes-caption">Alejandra — arquitecta y fundadora</p>
+        </div>
+        <div class="quienes-text reveal">
+          <div class="body-copy">
+            <p>Con más de 20 años de experiencia, en Dactilar entendemos la arquitectura como un proceso que integra diseño, construcción y una mirada atenta a la forma en que habitamos.</p>
+            <p>Trabajamos junto a un equipo multidisciplinario para desarrollar proyectos que equilibran funcionalidad, materialidad y estética, poniendo en valor lo existente y entendiendo cada espacio desde su propio contexto.</p>
+            <p>Nos mueve crear lugares con identidad, donde cada decisión tenga un propósito y cada proyecto deje su propia huella.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACTO ================= -->
+  <section id="contacto">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="reveal">
+          <p class="eyebrow">Contacto</p>
+          <h2>Conversemos sobre tu proyecto.</h2>
+          <p class="lede" style="margin-top:1.4rem;">Cuéntanos en qué etapa está tu proyecto, boceto, remodelación o construcción, y coordinamos una primera reunión con el equipo.</p>
+          <div class="contact-info">
+            <p>Puerto Varas, Chile</p>
+            <p><a href="mailto:hola@dactilar.cl">hola@dactilar.cl</a></p>
+          </div>
+        </div>
+        <div class="reveal">
+          <form class="contact-form" id="contactForm">
+            <input type="text" name="nombre" placeholder="Nombre" autocomplete="name" required>
+            <input type="email" name="email" placeholder="Email" autocomplete="email" required>
+            <div class="contact-form-row">
+              <select name="codigo" aria-label="Código de país">
+                <option value="+56">CL +56</option>
+                <option value="+54">AR +54</option>
+                <option value="+51">PE +51</option>
+                <option value="+1">US +1</option>
+              </select>
+              <input type="tel" name="telefono" placeholder="Teléfono" autocomplete="tel">
+            </div>
+            <select name="interes" required>
+              <option value="" selected disabled>¿Cuál es tu interés de contacto?</option>
+              <option value="Arquitectura y Diseño">Arquitectura y Diseño</option>
+              <option value="Remodelación">Remodelación</option>
+              <option value="Construcción">Construcción</option>
+              <option value="Otro">Otro</option>
+            </select>
+            <textarea name="mensaje" rows="5" placeholder="Escribe tu mensaje aquí…" required></textarea>
+            <button type="submit" class="contact-submit">Enviar mensaje</button>
+          </form>
+          <div class="contact-icons">
+            <a href="https://www.instagram.com/dactilar_pv/" target="_blank" rel="noopener" aria-label="Instagram de Dactilar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="mailto:hola@dactilar.cl" aria-label="Escribir a hola@dactilar.cl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            </a>
+            <a href="https://wa.me/56956739113" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5h2.7l1.3 4.4-2 2.1c1 2.7 2.6 4.3 5.3 5.3l2.1-2 4.4 1.3v2.7c0 1.1-.9 2.3-2 2.3-8 0-14.6-6.6-14.6-14.6 0-1.1 1.1-2 2.3-2z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <p class="foot-copy">© Dactilar</p>
+    <p class="foot-tagline">Arquitectura &amp; Construcción - Puerto Varas, Chile</p>
+    <a class="to-top" href="#top">Volver arriba</a>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var navEl = document.getElementById('siteNav');
+    var heroSpacerEl = document.querySelector('.hero-spacer');
+    /* El header queda transparente sobre la foto de portada y recién se pone verde sólido cuando se termina de pasar el hero (no a los pocos pixeles de scroll) */
+    var onScroll = function(){
+      var threshold = heroSpacerEl ? heroSpacerEl.getBoundingClientRect().height - 8 : 8;
+      if(window.scrollY > threshold){ navEl.classList.add('is-scrolled'); }
+      else{ navEl.classList.remove('is-scrolled'); }
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll);
+
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    toggle.addEventListener('click', function(){
+      var open = links.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    links.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        links.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    var sections = document.querySelectorAll('main section[id]');
+    var navAnchors = links.querySelectorAll('a[data-section]');
+    if('IntersectionObserver' in window){
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            navAnchors.forEach(function(a){
+              a.classList.toggle('is-active', a.dataset.section === entry.target.id);
+            });
+          }
+        });
+      }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+      sections.forEach(function(s){ obs.observe(s); });
+    }
+
+    /* Reveal on scroll */
+    var revealEls = document.querySelectorAll('.reveal');
+    if('IntersectionObserver' in window){
+      var revealObs = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add('is-visible');
+            revealObs.unobserve(entry.target);
+          }
+        });
+      }, {threshold:0.15});
+      revealEls.forEach(function(el){ revealObs.observe(el); });
+    } else {
+      revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+    }
+
+    /* Qué hacemos: al pasar el mouse sobre un ítem, la foto de la izquierda cambia según lo que dice ese párrafo */
+    var quehacemosList = document.getElementById('quehacemosList');
+    if(quehacemosList){
+      var quehacemosPlate = document.getElementById('quehacemosPlate');
+      var quehacemosImg = document.getElementById('quehacemosImg');
+      var quehacemosItems = Array.prototype.slice.call(quehacemosList.querySelectorAll('.enfoque-item'));
+      function activateQuehacemosItem(item){
+        if(item.classList.contains('is-active')) return;
+        quehacemosItems.forEach(function(i){ i.classList.remove('is-active'); });
+        item.classList.add('is-active');
+        quehacemosPlate.classList.add('is-swapping');
+        setTimeout(function(){
+          quehacemosImg.src = item.dataset.img;
+          quehacemosImg.alt = item.dataset.alt || '';
+          quehacemosPlate.classList.remove('is-swapping');
+        }, 250);
+      }
+      quehacemosItems.forEach(function(item){
+        item.addEventListener('mouseenter', function(){ activateQuehacemosItem(item); });
+        item.addEventListener('focus', function(){ activateQuehacemosItem(item); });
+      });
+    }
+
+    /* Hero: slider de fotos con crossfade automático */
+    var heroSlides = Array.prototype.slice.call(document.querySelectorAll('.hero-slide'));
+    var heroCaptions = ['Las Bahías', 'Molino Viejo', 'Loft'];
+    var heroInfoEl = document.querySelector('.hero-info');
+    var captionEl = document.getElementById('heroCaption');
+    var heroIndex = 0;
+    if(heroSlides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      setInterval(function(){
+        heroSlides[heroIndex].classList.remove('is-active');
+        heroIndex = (heroIndex + 1) % heroSlides.length;
+        heroSlides[heroIndex].classList.add('is-active');
+        /* Oculta el nombre mientras cruza la foto, para que no se vea el proyecto equivocado sobre la foto anterior */
+        if(heroInfoEl){ heroInfoEl.style.opacity = '0'; }
+        setTimeout(function(){
+          captionEl.textContent = heroCaptions[heroIndex] || '';
+          if(heroInfoEl){ heroInfoEl.style.opacity = '1'; }
+        }, 500);
+      }, 4500);
+    }
+
+    /* Carrusel de proyectos: la tarjeta más cercana al centro se agranda, y las de los costados asoman cortadas en los bordes */
+    var viewport = document.getElementById('carouselViewport');
+    var track = document.getElementById('carouselTrack');
+    var prevBtn = document.getElementById('carouselPrev');
+    var nextBtn = document.getElementById('carouselNext');
+    var dotsWrap = document.getElementById('carouselDots');
+    var cards = Array.prototype.slice.call(track.children);
+    var total = cards.length;
+    var centerIndex = 0;
+
+    /* Puntos de navegación: uno por proyecto, debajo del carrusel */
+    var dots = cards.map(function(card, i){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-label', 'Ver proyecto ' + (i + 1) + ' de ' + total);
+      b.addEventListener('click', function(){ scrollToIndex(i); });
+      dotsWrap.appendChild(b);
+      return b;
+    });
+
+    /* Deja espacio a los costados de la primera y última tarjeta para que también puedan quedar centradas */
+    function sizeTrackPadding(){
+      var baseWidth = cards[0].getBoundingClientRect().width;
+      var space = Math.max(0, (viewport.clientWidth - baseWidth) / 2);
+      track.style.paddingLeft = space + 'px';
+      track.style.paddingRight = space + 'px';
+    }
+
+    function updateCenter(){
+      var viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
+      var closestIdx = 0, closestDist = Infinity;
+      cards.forEach(function(card, i){
+        var cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        var dist = Math.abs(cardCenter - viewportCenter);
+        if(dist < closestDist){ closestDist = dist; closestIdx = i; }
+      });
+      centerIndex = closestIdx;
+      cards.forEach(function(card, i){
+        card.classList.toggle('is-center', i === closestIdx);
+        card.classList.toggle('is-adjacent', Math.abs(i - closestIdx) === 1);
+      });
+      dots.forEach(function(dot, i){ dot.classList.toggle('is-active', i === closestIdx); });
+      prevBtn.disabled = closestIdx === 0;
+      nextBtn.disabled = closestIdx === total - 1;
+    }
+
+    function scrollToIndex(idx, smooth){
+      idx = Math.max(0, Math.min(total - 1, idx));
+      var card = cards[idx];
+      var target = (card.offsetLeft + card.offsetWidth / 2) - viewport.clientWidth / 2;
+      viewport.scrollTo({left: target, behavior: smooth === false ? 'instant' : 'smooth'});
+    }
+
+    prevBtn.addEventListener('click', function(){ scrollToIndex(centerIndex - 1); });
+    nextBtn.addEventListener('click', function(){ scrollToIndex(centerIndex + 1); });
+    viewport.addEventListener('scroll', function(){
+      window.requestAnimationFrame(updateCenter);
+    }, {passive:true});
+    window.addEventListener('resize', function(){
+      sizeTrackPadding();
+      scrollToIndex(centerIndex, false);
+      updateCenter();
+    });
+    sizeTrackPadding();
+    scrollToIndex(0, false);
+    updateCenter();
+
+    /* Arrastrar el carrusel con mouse */
+    var isDown = false, startX, scrollStart;
+    viewport.addEventListener('mousedown', function(e){
+      isDown = true;
+      viewport.classList.add('is-dragging');
+      startX = e.pageX;
+      scrollStart = viewport.scrollLeft;
+    });
+    window.addEventListener('mouseup', function(){
+      isDown = false;
+      viewport.classList.remove('is-dragging');
+    });
+    window.addEventListener('mousemove', function(e){
+      if(!isDown) return;
+      e.preventDefault();
+      viewport.scrollLeft = scrollStart - (e.pageX - startX);
+    });
+
+    /* Formulario de contacto: no hay backend, así que arma un mailto con los datos del visitante */
+    var contactForm = document.getElementById('contactForm');
+    if(contactForm){
+      contactForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        var data = new FormData(contactForm);
+        var nombre = (data.get('nombre') || '').trim();
+        var email = (data.get('email') || '').trim();
+        var telefono = (data.get('telefono') || '').trim();
+        var codigo = data.get('codigo') || '';
+        var interes = data.get('interes') || '';
+        var mensaje = (data.get('mensaje') || '').trim();
+        var subject = 'Contacto desde la web — ' + nombre;
+        var body = 'Nombre: ' + nombre
+          + '\nEmail: ' + email
+          + '\nTeléfono: ' + (telefono ? codigo + ' ' + telefono : '(no indicado)')
+          + '\nInterés: ' + interes
+          + '\n\nMensaje:\n' + mensaje;
+        window.location.href = 'mailto:hola@dactilar.cl?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      });
+    }
+  })();
+</script>
