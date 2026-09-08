@@ -273,18 +273,41 @@
   }
   .enfoque-item{
     display:block;
+    position:relative;
     width:100%;
     border:none;
     background:none;
-    padding:1.5rem 0;
+    padding:1.5rem 0 1.5rem 1.2rem;
     margin:0;
     text-align:left;
     font:inherit;
     color:inherit;
     cursor:pointer;
     border-top:1px solid color-mix(in oklch, var(--cream) 30%, transparent);
+    transition:background-color .3s var(--ease);
+  }
+  .enfoque-item::before{
+    content:"";
+    position:absolute;
+    left:0; top:1.1rem; bottom:1.1rem;
+    width:3px;
+    background:var(--cream);
+    opacity:0;
+    transition:opacity .3s var(--ease);
   }
   .enfoque-item:first-child{padding-top:0; border-top:none;}
+  .enfoque-item:first-child::before{top:0;}
+  .enfoque-item:hover, .enfoque-item.is-active{
+    background:color-mix(in oklch, var(--cream) 8%, transparent);
+  }
+  .enfoque-item:hover::before, .enfoque-item.is-active::before{opacity:1;}
+  .enfoque-hint{
+    margin-top:1.4rem;
+    font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size:.78rem;
+    color:color-mix(in oklch, var(--cream) 70%, transparent);
+  }
+  @media (hover: none){ .enfoque-hint{display:none;} }
   .enfoque-item h3{
     font-size:1.15rem;
     font-weight:700;
@@ -720,6 +743,7 @@
                 <p>Llevamos cada proyecto desde el diseño hasta su ejecución, entregando soluciones integrales y listas para habitar.</p>
               </button>
             </div>
+            <p class="enfoque-hint">Pasa el cursor por cada ítem para ver su imagen →</p>
           </div>
           <div class="plate reveal" id="quehacemosPlate" style="--ar:4/3;">
             <div class="frame">
@@ -1032,7 +1056,7 @@
       updateCenter();
     });
     sizeTrackPadding();
-    scrollToIndex(0, false);
+    scrollToIndex(Math.floor((total - 1) / 2), false);
     updateCenter();
 
     /* Arrastrar el carrusel con mouse */
