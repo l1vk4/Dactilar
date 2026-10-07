@@ -430,10 +430,21 @@
     left:clamp(1.4rem, 3vw, 2.2rem);
     z-index:2;
     margin:0;
+    display:flex;
+    flex-direction:column;
+    gap:.35rem;
     font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
     font-size:.85rem;
     color:var(--white);
   }
+  .quienes-caption a{
+    color:var(--white);
+    text-decoration:underline;
+    text-underline-offset:.2em;
+    text-decoration-color:color-mix(in oklch, var(--white) 55%, transparent);
+    transition:text-decoration-color .3s var(--ease);
+  }
+  .quienes-caption a:hover{text-decoration-color:var(--white);}
   .quienes-text{align-self:center;}
   .quienes-text .body-copy p{text-wrap:pretty;}
   @media (max-width:860px){
@@ -810,7 +821,10 @@
             <img src="img/alejandra-cocina.jpg" alt="Alejandra, arquitecta y fundadora de Dactilar, en la cocina de uno de sus proyectos">
           </div>
           <p class="eyebrow">Quiénes somos</p>
-          <p class="quienes-caption">Alejandra — arquitecta y fundadora</p>
+          <div class="quienes-caption">
+            <span>Alejandra — arquitecta y fundadora</span>
+            <a href="https://ruasalon.cl/la-revelacion-tras-la-remodelacion-el-magico-enfoque-de-alejandra-perez/" target="_blank" rel="noopener">Leer artículo sobre Alejandra →</a>
+          </div>
         </div>
         <div class="quienes-text reveal">
           <div class="body-copy">
