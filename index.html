@@ -266,10 +266,10 @@
   /* Qué hacemos: la foto queda fija y cambia según el ítem que está al centro de la pantalla */
   .enfoque-quehacemos .grid-2.reverse{margin-top:2.6rem; align-items:start; grid-template-columns:minmax(0, 52%) 1fr;}
   .enfoque-quehacemos .plate{
-    --qh:min(78svh, 46rem);
+    --qh:calc(100svh - var(--nav-h, 4.5rem));
     margin-left:calc(var(--pad) * -1);
     position:sticky;
-    top:max(4.6rem, calc(50svh - var(--qh) / 2));
+    top:var(--nav-h, 4.5rem);
   }
   .enfoque-quehacemos .plate .frame{height:var(--qh); aspect-ratio:auto;}
   .enfoque-quehacemos .plate .frame img{opacity:0; transition:opacity .7s var(--ease);}
@@ -286,6 +286,7 @@
     transition:opacity .5s var(--ease);
   }
   .enfoque-item:first-child{border-top:none;}
+  .enfoque-item:last-child{min-height:100svh;}
   .enfoque-item.is-active{opacity:1;}
   .enfoque-item h3{
     font-size:clamp(1.4rem, 1.2vw + 1rem, 1.9rem);
@@ -299,7 +300,7 @@
     .enfoque-quehacemos .grid-2.reverse{grid-template-columns:1fr;}
     .enfoque-quehacemos .plate{top:4.6rem; z-index:3; margin:0 calc(var(--pad) * -1); width:calc(100% + var(--pad) * 2);}
     .enfoque-quehacemos .plate .frame{height:auto; aspect-ratio:16/10;}
-    .enfoque-item{min-height:55svh; justify-content:flex-start; padding-top:2.5rem;}
+    .enfoque-item, .enfoque-item:last-child{min-height:55svh; justify-content:flex-start; padding-top:2.5rem;}
   }
 
   .body-copy{max-width:40rem;}
@@ -890,6 +891,10 @@
 <script>
   (function(){
     var navEl = document.getElementById('siteNav');
+    /* Alto real del header: la foto de Qué hacemos se ajusta para llegar justo hasta el borde inferior de la pantalla */
+    var setNavHeight = function(){ document.documentElement.style.setProperty('--nav-h', navEl.getBoundingClientRect().height + 'px'); };
+    setNavHeight();
+    window.addEventListener('resize', setNavHeight);
     var heroSpacerEl = document.querySelector('.hero-spacer');
     /* El header queda transparente sobre la foto de portada y recién se pone verde sólido cuando se termina de pasar el hero (no a los pocos pixeles de scroll) */
     var onScroll = function(){
