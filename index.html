@@ -263,57 +263,44 @@
     .enfoque-text{margin-top:0;}
   }
 
-  .enfoque-quehacemos .grid-2{margin-top:2.6rem; align-items:center;}
-  .enfoque-quehacemos .plate{width:100%; max-width:36rem; margin-left:auto; margin-right:auto; transition:opacity .3s var(--ease);}
-  .enfoque-quehacemos .plate.is-swapping{opacity:0;}
-  .enfoque-list{
-    margin-top:1.8rem;
+  /* Qué hacemos: la foto queda fija y cambia según el ítem que está al centro de la pantalla */
+  .enfoque-quehacemos .grid-2{margin-top:2.6rem; align-items:start;}
+  .enfoque-quehacemos .plate{
+    width:100%;
+    max-width:36rem;
+    margin-left:auto;
+    margin-right:auto;
+    position:sticky;
+    top:max(5.5rem, calc(50svh - 13.5rem));
+  }
+  .enfoque-quehacemos .plate .frame img{opacity:0; transition:opacity .7s var(--ease);}
+  .enfoque-quehacemos .plate .frame img.is-active{opacity:1;}
+  .enfoque-list{display:flex; flex-direction:column;}
+  .enfoque-item{
+    min-height:70svh;
     display:flex;
     flex-direction:column;
-  }
-  .enfoque-item{
-    display:block;
-    position:relative;
-    width:100%;
-    border:none;
-    background:none;
-    padding:1.5rem 0 1.5rem 1.2rem;
-    margin:0;
-    text-align:left;
-    font:inherit;
-    color:inherit;
-    cursor:pointer;
+    justify-content:center;
+    padding:2rem 0;
     border-top:1px solid color-mix(in oklch, var(--cream) 30%, transparent);
-    transition:background-color .3s var(--ease);
+    opacity:.3;
+    transition:opacity .5s var(--ease);
   }
-  .enfoque-item::before{
-    content:"";
-    position:absolute;
-    left:0; top:1.1rem; bottom:1.1rem;
-    width:3px;
-    background:var(--cream);
-    opacity:0;
-    transition:opacity .3s var(--ease);
-  }
-  .enfoque-item:first-child{padding-top:0; border-top:none;}
-  .enfoque-item:first-child::before{top:0;}
-  .enfoque-item:hover, .enfoque-item.is-active{
-    background:color-mix(in oklch, var(--cream) 8%, transparent);
-  }
-  .enfoque-item:hover::before, .enfoque-item.is-active::before{opacity:1;}
+  .enfoque-item:first-child{border-top:none;}
+  .enfoque-item.is-active{opacity:1;}
   .enfoque-item h3{
-    font-size:1.15rem;
+    font-size:clamp(1.4rem, 1.2vw + 1rem, 1.9rem);
     font-weight:700;
-    margin-bottom:.4rem;
-    opacity:.6;
-    transition:opacity .3s var(--ease);
+    margin-bottom:.6rem;
   }
-  .enfoque-item p{
-    max-width:32rem;
-    color:var(--ink);
-  }
-  .enfoque-item.is-active h3{opacity:1;}
+  .enfoque-item p{max-width:32rem;}
   .tone-teal .enfoque-item p{color:color-mix(in oklch, var(--cream) 88%, transparent);}
+  @media (max-width:860px){
+    .enfoque-quehacemos .grid-2.reverse .plate{order:-1;}
+    .enfoque-quehacemos .plate{top:4.6rem; z-index:3; max-width:none; margin:0 calc(var(--pad) * -1); width:calc(100% + var(--pad) * 2);}
+    .enfoque-quehacemos .plate .frame{aspect-ratio:16/10;}
+    .enfoque-item{min-height:55svh; justify-content:flex-start; padding-top:2.5rem;}
+  }
 
   .body-copy{max-width:40rem;}
   .body-copy p + p{margin-top:1.1rem;}
@@ -736,25 +723,25 @@
       <div class="enfoque-quehacemos">
         <p class="eyebrow reveal">Qué hacemos</p>
         <div class="grid-2 reverse">
-          <div class="reveal">
-            <div class="enfoque-list" id="quehacemosList">
-              <button type="button" class="enfoque-item is-active" data-img="img/molino-quincho.jpg" data-alt="Quincho y mobiliario a medida del proyecto Molino Viejo">
-                <h3>Arquitectura y Diseño</h3>
-                <p>Creamos proyectos que integran arquitectura, interiorismo y diseño, cuidando cada detalle.</p>
-              </button>
-              <button type="button" class="enfoque-item" data-img="img/molino-espacios.jpg" data-alt="Living del proyecto Molino Viejo luego de su remodelación">
-                <h3>Remodelación</h3>
-                <p>Transformamos espacios existentes, descubriendo y potenciando su potencial.</p>
-              </button>
-              <button type="button" class="enfoque-item" data-img="img/molino-proceso.jpg" data-alt="Obra en construcción, estructura de madera antes del cierre">
-                <h3>Construcción</h3>
-                <p>Llevamos cada proyecto desde el diseño hasta su ejecución, entregando soluciones integrales y listas para habitar.</p>
-              </button>
+          <div class="enfoque-list" id="quehacemosList">
+            <div class="enfoque-item is-active" data-index="0">
+              <h3>Arquitectura y Diseño</h3>
+              <p>Creamos proyectos que integran arquitectura, interiorismo y diseño, cuidando cada detalle.</p>
+            </div>
+            <div class="enfoque-item" data-index="1">
+              <h3>Remodelación</h3>
+              <p>Transformamos espacios existentes, descubriendo y potenciando su potencial.</p>
+            </div>
+            <div class="enfoque-item" data-index="2">
+              <h3>Construcción</h3>
+              <p>Llevamos cada proyecto desde el diseño hasta su ejecución, entregando soluciones integrales y listas para habitar.</p>
             </div>
           </div>
           <div class="plate reveal" id="quehacemosPlate" style="--ar:4/3;">
             <div class="frame">
-              <img src="img/molino-quincho.jpg" alt="Quincho y mobiliario a medida del proyecto Molino Viejo" id="quehacemosImg">
+              <img class="is-active" src="img/molino-quincho.jpg" alt="Quincho y mobiliario a medida del proyecto Molino Viejo">
+              <img src="img/molino-espacios.jpg" alt="Living del proyecto Molino Viejo luego de su remodelación">
+              <img src="img/molino-proceso.jpg" alt="Obra en construcción, estructura de madera antes del cierre">
             </div>
           </div>
         </div>
@@ -958,27 +945,27 @@
       revealEls.forEach(function(el){ el.classList.add('is-visible'); });
     }
 
-    /* Qué hacemos: al pasar el mouse sobre un ítem, la foto de la izquierda cambia según lo que dice ese párrafo */
+    /* Qué hacemos: el ítem que cruza el centro de la pantalla activa su foto (la foto queda fija) */
     var quehacemosList = document.getElementById('quehacemosList');
-    if(quehacemosList){
-      var quehacemosPlate = document.getElementById('quehacemosPlate');
-      var quehacemosImg = document.getElementById('quehacemosImg');
+    if(quehacemosList && 'IntersectionObserver' in window){
       var quehacemosItems = Array.prototype.slice.call(quehacemosList.querySelectorAll('.enfoque-item'));
-      function activateQuehacemosItem(item){
-        if(item.classList.contains('is-active')) return;
-        quehacemosItems.forEach(function(i){ i.classList.remove('is-active'); });
-        item.classList.add('is-active');
-        quehacemosPlate.classList.add('is-swapping');
-        setTimeout(function(){
-          quehacemosImg.src = item.dataset.img;
-          quehacemosImg.alt = item.dataset.alt || '';
-          quehacemosPlate.classList.remove('is-swapping');
-        }, 250);
-      }
-      quehacemosItems.forEach(function(item){
-        item.addEventListener('mouseenter', function(){ activateQuehacemosItem(item); });
-        item.addEventListener('focus', function(){ activateQuehacemosItem(item); });
-      });
+      var quehacemosImgs = Array.prototype.slice.call(document.querySelectorAll('#quehacemosPlate .frame img'));
+      var setQuehacemos = function(idx){
+        quehacemosItems.forEach(function(el, i){ el.classList.toggle('is-active', i === idx); });
+        quehacemosImgs.forEach(function(img, i){ img.classList.toggle('is-active', i === idx); });
+      };
+      var quehacemosObs = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){ setQuehacemos(quehacemosItems.indexOf(entry.target)); }
+        });
+      }, {rootMargin:'-50% 0px -50% 0px', threshold:0});
+      quehacemosItems.forEach(function(el){ quehacemosObs.observe(el); });
+      /* Al volver a subir por encima de la lista, la foto regresa a la primera */
+      var quehacemosListObs = new IntersectionObserver(function(entries){
+        var e = entries[0];
+        if(!e.isIntersecting && e.boundingClientRect.top > window.innerHeight / 2){ setQuehacemos(0); }
+      }, {rootMargin:'-50% 0px -50% 0px', threshold:0});
+      quehacemosListObs.observe(quehacemosList);
     }
 
     /* Hero: slider de fotos con crossfade automático */
