@@ -264,15 +264,14 @@
   }
 
   /* Qué hacemos: la foto queda fija y cambia según el ítem que está al centro de la pantalla */
-  .enfoque-quehacemos .grid-2{margin-top:2.6rem; align-items:start;}
+  .enfoque-quehacemos .grid-2.reverse{margin-top:2.6rem; align-items:start; grid-template-columns:minmax(0, 52%) 1fr;}
   .enfoque-quehacemos .plate{
-    width:100%;
-    max-width:36rem;
-    margin-left:auto;
-    margin-right:auto;
+    --qh:min(78svh, 46rem);
+    margin-left:calc(var(--pad) * -1);
     position:sticky;
-    top:max(5.5rem, calc(50svh - 13.5rem));
+    top:max(4.6rem, calc(50svh - var(--qh) / 2));
   }
+  .enfoque-quehacemos .plate .frame{height:var(--qh); aspect-ratio:auto;}
   .enfoque-quehacemos .plate .frame img{opacity:0; transition:opacity .7s var(--ease);}
   .enfoque-quehacemos .plate .frame img.is-active{opacity:1;}
   .enfoque-list{display:flex; flex-direction:column;}
@@ -297,8 +296,9 @@
   .tone-teal .enfoque-item p{color:color-mix(in oklch, var(--cream) 88%, transparent);}
   @media (max-width:860px){
     .enfoque-quehacemos .grid-2.reverse .plate{order:-1;}
-    .enfoque-quehacemos .plate{top:4.6rem; z-index:3; max-width:none; margin:0 calc(var(--pad) * -1); width:calc(100% + var(--pad) * 2);}
-    .enfoque-quehacemos .plate .frame{aspect-ratio:16/10;}
+    .enfoque-quehacemos .grid-2.reverse{grid-template-columns:1fr;}
+    .enfoque-quehacemos .plate{top:4.6rem; z-index:3; margin:0 calc(var(--pad) * -1); width:calc(100% + var(--pad) * 2);}
+    .enfoque-quehacemos .plate .frame{height:auto; aspect-ratio:16/10;}
     .enfoque-item{min-height:55svh; justify-content:flex-start; padding-top:2.5rem;}
   }
 
